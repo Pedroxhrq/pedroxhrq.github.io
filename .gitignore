@@ -1,0 +1,24 @@
+# Ignore everything by default; allow only the source paths listed below.
+# Paths are relative to the project root. No ZIP file is required.
+# Add an explicit exception below when introducing a new source file.
+*
+
+# Root source files and this ignore policy. README.md remains ignored.
+!/.editorconfig
+!/.gitignore
+!/.nojekyll
+!/index.html
+!/styles.css
+!/i18n.js
+!/app.js
+!/package.json
+
+# Allow traversal into these directories, then allow only the listed files.
+!/scripts/
+!/scripts/serve.mjs
+!/scripts/check.mjs
+!/assets/
+!/assets/favicon.svg
+!/assets/fonts/
+!/assets/fonts/JetBrainsMono-Regular.woff2
+!/assets/fonts/OFL.txt

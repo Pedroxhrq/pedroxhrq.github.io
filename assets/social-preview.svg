@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Pedro Henrique Paulek — software developer</title>
+  <desc id="description">A Catppuccin Frappé terminal featuring Pedro Henrique Paulek with the greeting Hello, Friend and pedroxhrq.github.io.</desc>
+  <style>
+    text { font-family: "JetBrains Mono", "Cascadia Code", monospace; font-weight: 400; }
+  </style>
+  <rect width="1200" height="630" fill="#232634"/>
+  <rect x="55" y="45" width="1090" height="540" rx="18" fill="#303446" stroke="#51576d" stroke-width="2"/>
+  <path d="M73 46H1127Q1144 46 1144 63V107H56V63Q56 46 73 46Z" fill="#292c3c"/>
+  <path d="M56 107H1144" stroke="#51576d" stroke-width="2"/>
+  <circle cx="87" cy="77" r="7" fill="#e78284"/>
+  <circle cx="112" cy="77" r="7" fill="#e5c890"/>
+  <circle cx="137" cy="77" r="7" fill="#a6d189"/>
+  <text x="600" y="84" fill="#a5adce" font-size="18" text-anchor="middle">pedro@portfolio: ~</text>
+  <text x="1107" y="84" fill="#a5adce" font-size="16" text-anchor="end">zsh</text>
+  <text x="105" y="165" fill="#a6d189" font-size="20">pedro@portfolio</text>
+  <text x="310" y="165" fill="#8caaee" font-size="20">~</text>
+  <text x="345" y="165" fill="#ca9ee6" font-size="20">❯</text>
+  <text x="380" y="165" fill="#c6d0f5" font-size="20">whoami</text>
+  <text x="105" y="230" fill="#a6d189" font-size="19" letter-spacing="3">HELLO, FRIEND.</text>
+  <text x="100" y="310" fill="#c6d0f5" font-size="60" letter-spacing="-3">Pedro Henrique Paulek</text>
+  <rect x="818" y="261" width="16" height="54" fill="#a6d189"/>
+  <text x="105" y="363" fill="#ca9ee6" font-size="25">Software developer</text>
+  <text x="105" y="402" fill="#b5bfe2" font-size="21">Desenvolvedor de software · Brasil</text>
+  <g transform="translate(903 223)" fill="none" stroke-linecap="square" stroke-linejoin="miter" stroke-width="12">
+    <path d="M0 0L46 46L0 92" stroke="#a6d189"/>
+    <path d="M70 92H124" stroke="#ca9ee6"/>
+  </g>
+  <path d="M105 448H1095" stroke="#51576d" stroke-width="2" stroke-dasharray="5 8"/>
+  <text x="105" y="493" fill="#b5bfe2" font-size="19">Python · TypeScript · Mobile · Text adventures</text>
+  <path d="M56 529H1144" stroke="#51576d" stroke-width="2"/>
+  <path d="M56 530H201V584H73Q56 584 56 567Z" fill="#ca9ee6"/>
+  <text x="129" y="564" fill="#232634" font-size="17" text-anchor="middle">PORTFOLIO</text>
+  <text x="232" y="564" fill="#c6d0f5" font-size="20">pedroxhrq.github.io</text>
+  <g transform="translate(903 549)">
+    <rect width="24" height="14" fill="#e78284"/>
+    <rect x="24" width="24" height="14" fill="#ef9f76"/>
+    <rect x="48" width="24" height="14" fill="#e5c890"/>
+    <rect x="72" width="24" height="14" fill="#a6d189"/>
+    <rect x="96" width="24" height="14" fill="#81c8be"/>
+    <rect x="120" width="24" height="14" fill="#8caaee"/>
+    <rect x="144" width="24" height="14" fill="#ca9ee6"/>
+    <rect x="168" width="24" height="14" fill="#f4b8e4"/>
+  </g>
+</svg>

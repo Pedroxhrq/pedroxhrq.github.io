@@ -10,15 +10,49 @@
 !/index.html
 !/styles.css
 !/i18n.js
+!/translations.js
 !/app.js
 !/package.json
+!/package-lock.json
+!/playwright.config.js
+!/sitemap.xml
+!/robots.txt
+
+# Generated static language pages (served directly by GitHub Pages).
+!/en/
+!/en/index.html
+!/pt-br/
+!/pt-br/index.html
 
 # Allow traversal into these directories, then allow only the listed files.
 !/scripts/
 !/scripts/serve.mjs
 !/scripts/check.mjs
+!/scripts/build.mjs
+!/scripts/social-preview.mjs
 !/assets/
 !/assets/favicon.svg
+!/assets/social-preview.svg
+!/assets/social-preview.png
 !/assets/fonts/
 !/assets/fonts/JetBrainsMono-Regular.woff2
 !/assets/fonts/OFL.txt
+
+# Reproducible browser checks; dependencies and test output stay ignored.
+!/tests/
+!/tests/portfolio.spec.js
+!/tests/languages.spec.js
+!/tests/discovery.spec.js
+!/tests/setup.mjs
+
+# Keep local documentation, dependencies, and generated development output out.
+# These exclusions stay after the allowlist so they take precedence.
+/README.md
+/node_modules/
+/.qa/
+/test-results/
+/playwright-report/
+*.log
+*.zip
+*.bak
+*.tmp

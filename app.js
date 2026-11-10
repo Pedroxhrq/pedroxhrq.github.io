@@ -5,6 +5,7 @@
   const input = document.querySelector('#command-input');
   const output = document.querySelector('#terminal-output');
   const feedback = document.querySelector('#command-feedback');
+  const shortcutsToggle = document.querySelector('#keyboard-shortcuts');
   const path = document.querySelector('#current-path');
   const navLinks = [...document.querySelectorAll('.section-nav a')];
   const sections = ['about', 'projects', 'contact'];
@@ -13,18 +14,20 @@
   const linkedin = 'https://www.linkedin.com/in/pedroxhenrique/';
   const englishCommands = [
     'help', 'whoami', 'about', 'projects', 'ls', 'contact', 'github',
-    'linkedin', 'clear', 'theme', 'pwd', 'date', 'cat about.md',
+    'linkedin', 'clear', 'theme', 'pwd', 'date', 'cat about.md', 'cat contact.sh', 'ls ./projects',
     'cd about', 'cd projects', 'cd contact', 'cd ~',
   ];
   const portugueseCommands = [
     'ajuda', 'whoami', 'sobre', 'projetos', 'ls', 'contato', 'github',
-    'linkedin', 'limpar', 'tema', 'pwd', 'data', 'cat sobre.md',
+    'linkedin', 'limpar', 'tema', 'pwd', 'data', 'cat sobre.md', 'cat contato.sh', 'ls ./projetos',
     'cd sobre', 'cd projetos', 'cd contato', 'cd ~',
   ];
   const aliases = new Map([
     ['ajuda', 'help'], ['sobre', 'about'], ['projetos', 'projects'],
     ['contato', 'contact'], ['limpar', 'clear'], ['tema', 'theme'],
     ['data', 'date'], ['cat sobre.md', 'cat about.md'],
+    ['ls ./projects', 'projects'], ['ls ./projetos', 'projects'],
+    ['cat contact.sh', 'contact'], ['cat contato.sh', 'contact'],
     ['cd sobre', 'cd about'], ['cd projetos', 'cd projects'], ['cd contato', 'cd contact'],
   ]);
   const messages = {
@@ -36,8 +39,8 @@
       helpContact: 'find me online',
       helpTheme: 'the colors behind this terminal',
       helpClear: 'clear this terminal',
-      helpMore: 'Also: ls, github, linkedin, pwd, date, cat about.md, cd about, cd projects, cd contact, cd ~. Use ↑/↓ for history and Tab to complete.',
-      about: 'Pedro Henrique — software developer in Brazil. Passionately curious.',
+      helpMore: 'Also: ls, ls ./projects, github, linkedin, pwd, date, cat about.md, cat contact.sh, cd about, cd projects, cd contact, cd ~. Use ↑/↓ for history and Tab to complete.',
+      about: 'Pedro Henrique Paulek — software developer in Brazil. Passionately curious.',
       aboutLink: 'Read about Pedro ↗',
       pinned: 'Pinned on GitHub:',
       contact: 'Find me here:',
@@ -54,6 +57,8 @@
       helpCommand: 'help',
       completed: 'Completed: {command}',
       matches: 'Matches: {commands}',
+      shortcutsEnabled: 'Keyboard shortcuts enabled: / focuses the terminal and ? opens help.',
+      shortcutsDisabled: 'Keyboard shortcuts disabled. Terminal buttons, command history, and Tab completion still work.',
     },
     'pt-BR': {
       cleared: 'Saída do terminal limpa.',
@@ -63,8 +68,8 @@
       helpContact: 'onde me encontrar',
       helpTheme: 'as cores deste terminal',
       helpClear: 'limpar este terminal',
-      helpMore: 'Também: ls, github, linkedin, pwd, data, cat sobre.md, cd sobre, cd projetos, cd contato, cd ~. Use ↑/↓ para navegar pelo histórico e Tab para completar. Os comandos em inglês também funcionam.',
-      about: 'Pedro Henrique — desenvolvedor de software no Brasil. Movido pela curiosidade.',
+      helpMore: 'Também: ls, ls ./projetos, github, linkedin, pwd, data, cat sobre.md, cat contato.sh, cd sobre, cd projetos, cd contato, cd ~. Use ↑/↓ para navegar pelo histórico e Tab para completar. Os comandos em inglês também funcionam.',
+      about: 'Pedro Henrique Paulek — desenvolvedor de software no Brasil. Movido pela curiosidade.',
       aboutLink: 'Saiba mais sobre o Pedro ↗',
       pinned: 'Repositórios fixados no GitHub:',
       contact: 'Você me encontra aqui:',
@@ -81,6 +86,8 @@
       helpCommand: 'ajuda',
       completed: 'Completado: {command}',
       matches: 'Opções: {commands}',
+      shortcutsEnabled: 'Atalhos de teclado ativados: / foca o terminal e ? abre a ajuda.',
+      shortcutsDisabled: 'Atalhos de teclado desativados. Os botões do terminal, o histórico e o preenchimento com Tab continuam funcionando.',
     },
   };
   const commandHistory = [];
@@ -89,6 +96,7 @@
   let draft = '';
   let currentSection = 'about';
   let feedbackMessage;
+  let shortcutsEnabled = true;
 
   if (!form || !input || !output) return;
 
@@ -107,7 +115,14 @@
   };
 
   const link = (label, href) => {
-    const anchor = element('a', '', label);
+    const anchor = element('a');
+    const hasArrow = label.endsWith('↗');
+    anchor.append(element('span', 'link-label', hasArrow ? label.slice(0, -1).trimEnd() : label));
+    if (hasArrow) {
+      const arrow = element('span', 'link-arrow', '↗');
+      arrow.setAttribute('aria-hidden', 'true');
+      anchor.append(document.createTextNode(' '), arrow);
+    }
     anchor.href = href;
     return anchor;
   };
@@ -116,6 +131,22 @@
     feedbackMessage = key ? { key, values } : undefined;
     if (feedback) feedback.textContent = key ? t(key, values) : '';
   };
+
+  const renderShortcutPreference = () => {
+    if (shortcutsToggle) shortcutsToggle.checked = shortcutsEnabled;
+    document.querySelectorAll('[data-shortcut-hint]').forEach((hint) => {
+      hint.hidden = !shortcutsEnabled;
+    });
+  };
+
+  try { shortcutsEnabled = localStorage.getItem('portfolio-shortcuts') !== 'off'; } catch { /* Storage is optional. */ }
+  renderShortcutPreference();
+  shortcutsToggle?.addEventListener('change', () => {
+    shortcutsEnabled = shortcutsToggle.checked;
+    try { localStorage.setItem('portfolio-shortcuts', shortcutsEnabled ? 'on' : 'off'); } catch { /* Keep the choice for this visit. */ }
+    renderShortcutPreference();
+    announce(shortcutsEnabled ? 'shortcutsEnabled' : 'shortcutsDisabled');
+  });
 
   const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ? 'auto' : 'smooth';
@@ -204,13 +235,13 @@
         break;
       case 'contact':
         result.append(element('p', '', t('contact')));
-        addLinks(result, [['GitHub · @Pedroxhrq ↗', profile], ['LinkedIn · Pedro Henrique ↗', linkedin]]);
+        addLinks(result, [['GitHub · @Pedroxhrq ↗', profile], ['LinkedIn · Pedro Henrique Paulek ↗', linkedin]]);
         break;
       case 'github':
         addLinks(result, [['GitHub · @Pedroxhrq ↗', profile]]);
         break;
       case 'linkedin':
-        addLinks(result, [['LinkedIn · Pedro Henrique ↗', linkedin]]);
+        addLinks(result, [['LinkedIn · Pedro Henrique Paulek ↗', linkedin]]);
         break;
       case 'theme':
         result.append(element('p', '', t('theme')), element('p', '', t('colors')));
@@ -362,6 +393,7 @@
   });
 
   document.addEventListener('keydown', (event) => {
+    if (!shortcutsEnabled || event.defaultPrevented) return;
     const target = event.target;
     const editable = target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])');
     if (['/', '?'].includes(event.key) && !editable && !event.ctrlKey && !event.metaKey && !event.altKey && !event.isComposing) {

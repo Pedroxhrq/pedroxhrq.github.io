@@ -21,6 +21,8 @@ const mimeTypes = {
   '.ico': 'image/x-icon',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
 };
 
 function respond(response, status, message, method, headers = {}) {
@@ -41,22 +43,31 @@ const server = createServer(async (request, response) => {
   }
 
   let pathname;
+  const requestUrl = request.url || '/';
+  const queryIndex = requestUrl.indexOf('?');
+  const search = queryIndex === -1 ? '' : requestUrl.slice(queryIndex);
   try {
-    pathname = decodeURIComponent((request.url || '/').split('?')[0]);
+    pathname = decodeURIComponent(requestUrl.split('?')[0]);
   } catch {
     respond(response, 400, 'Invalid request path', method);
     return;
   }
 
   if (pathname === '/portfolio') {
-    respond(response, 301, 'Redirecting', method, { Location: '/portfolio/' });
+    respond(response, 301, 'Redirecting', method, { Location: `/portfolio/${search}` });
     return;
   }
-  if (pathname.startsWith('/portfolio/')) pathname = pathname.slice('/portfolio'.length);
-  if (pathname === '/') pathname = '/index.html';
+  const prefix = pathname.startsWith('/portfolio/') ? '/portfolio' : '';
+  if (prefix) pathname = pathname.slice(prefix.length);
+  if (['/en', '/pt-br'].includes(pathname)) {
+    respond(response, 301, 'Redirecting', method, { Location: `${prefix}${pathname}/${search}` });
+    return;
+  }
+  if (['/', '/en/', '/pt-br/'].includes(pathname)) pathname += 'index.html';
 
   const segments = pathname.split('/');
-  const allowed = ['/index.html', '/styles.css', '/i18n.js', '/app.js'].includes(pathname)
+  const allowed = ['/index.html', '/en/index.html', '/pt-br/index.html', '/styles.css',
+    '/translations.js', '/i18n.js', '/app.js', '/sitemap.xml', '/robots.txt'].includes(pathname)
     || pathname.startsWith('/assets/');
   if (!allowed || pathname.includes('\\') || pathname.includes('\0')
       || segments.some((segment) => segment.startsWith('.'))) {

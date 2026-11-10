@@ -6,7 +6,9 @@ import { spawnSync } from 'node:child_process';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
 
-for (const file of ['index.html', 'styles.css', 'i18n.js', 'app.js', '.nojekyll']) {
+for (const file of ['index.html', 'en/index.html', 'pt-br/index.html', 'styles.css',
+  'translations.js', 'i18n.js', 'app.js', '.nojekyll', 'sitemap.xml', 'robots.txt',
+  'assets/social-preview.png', 'assets/social-preview.svg', 'assets/fonts/OFL.txt']) {
   try {
     if (!(await stat(resolve(root, file))).isFile()) errors.push(`${file} is not a file.`);
   } catch {
@@ -14,7 +16,7 @@ for (const file of ['index.html', 'styles.css', 'i18n.js', 'app.js', '.nojekyll'
   }
 }
 
-for (const file of ['i18n.js', 'app.js']) {
+for (const file of ['translations.js', 'i18n.js', 'app.js', 'scripts/build.mjs', 'scripts/serve.mjs', 'scripts/social-preview.mjs']) {
   const syntax = spawnSync(process.execPath, ['--check', resolve(root, file)], { encoding: 'utf8' });
   if (syntax.status !== 0) errors.push(syntax.stderr.trim() || `JavaScript syntax check failed: ${file}`);
 }
@@ -48,9 +50,13 @@ async function verifyAsset(reference, source) {
 }
 
 try {
-  const html = await readFile(resolve(root, 'index.html'), 'utf8');
-  for (const match of html.matchAll(/\b(?:src|href)\s*=\s*["']([^"']*)["']/gi)) {
-    await verifyAsset(match[1], 'index.html');
+  for (const page of ['index.html', 'en/index.html', 'pt-br/index.html']) {
+    const html = await readFile(resolve(root, page), 'utf8');
+    for (const match of html.matchAll(/\b(?:src|href)\s*=\s*["']([^"']*)["']/gi)) {
+      const reference = match[1];
+      await verifyAsset(reference.endsWith('/') && !/^[a-z][a-z\d+.-]*:/i.test(reference)
+        ? `${reference}index.html` : reference, page);
+    }
   }
   const css = await readFile(resolve(root, 'styles.css'), 'utf8');
   for (const match of css.matchAll(/url\(\s*["']?([^"')\s]+)["']?\s*\)/gi)) {
@@ -59,6 +65,9 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') errors.push(error.message);
 }
+
+const generated = spawnSync(process.execPath, [resolve(root, 'scripts/build.mjs'), '--check'], { encoding: 'utf8' });
+if (generated.status !== 0) errors.push(generated.stderr.trim() || 'Static language pages are stale. Run npm run build.');
 
 if (errors.length) {
   console.error(errors.map((error) => `FAIL: ${error}`).join('\n'));

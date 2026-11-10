@@ -1,6 +1,39 @@
 (() => {
   'use strict';
 
+  const headingName = document.querySelector('.heading-name');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (headingName && !motionPreference.matches) {
+    const fullName = headingName.textContent;
+    let position = 0;
+    let typingTimer;
+    const finishTyping = () => {
+      window.clearTimeout(typingTimer);
+      headingName.textContent = fullName;
+      motionPreference.removeEventListener('change', finishOnReducedMotion);
+      window.removeEventListener('beforeprint', finishTyping);
+    };
+    const finishOnReducedMotion = () => {
+      if (motionPreference.matches) finishTyping();
+    };
+    const typeCharacter = () => {
+      position += 1;
+      headingName.textContent = fullName.slice(0, position);
+      if (position === fullName.length) {
+        finishTyping();
+        return;
+      }
+      const delay = fullName[position - 1] === ' ' ? 220 : 100 + (position % 3) * 20;
+      typingTimer = window.setTimeout(typeCharacter, delay);
+    };
+
+    headingName.textContent = '';
+    motionPreference.addEventListener('change', finishOnReducedMotion);
+    window.addEventListener('beforeprint', finishTyping);
+    typingTimer = window.setTimeout(typeCharacter, 250);
+  }
+
   const form = document.querySelector('#command-form');
   const input = document.querySelector('#command-input');
   const output = document.querySelector('#terminal-output');

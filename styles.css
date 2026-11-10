@@ -102,7 +102,7 @@ section { scroll-margin-top: 24px; }
 .eyebrow { font-size: 10px; letter-spacing: 1.65px; color: var(--subtext0); margin: 0 0 15px; }
 .eyebrow-dot { color: var(--green); }
 h1 { font-size: clamp(32px, 4vw, 48px); letter-spacing: -2.7px; line-height: 1.25; font-weight: 400; color: var(--text); margin: 0 0 17px; white-space: nowrap; }
-.block-cursor { display: inline-block; width: 11px; height: 37px; margin-left: 9px; background: var(--green); vertical-align: -2px; animation: cursor-blink 1.6s step-end 4; }
+.block-cursor { display: inline-block; width: 11px; height: 37px; margin-left: 9px; background: var(--green); vertical-align: -2px; animation: cursor-blink 1.6s step-end infinite; }
 @keyframes cursor-blink { 50% { opacity: 0; } }
 .intro-role { color: var(--mauve); margin: 0 0 21px; font-size: 14px; }
 .muted { color: var(--subtext0); }

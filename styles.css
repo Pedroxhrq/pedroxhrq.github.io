@@ -146,7 +146,7 @@ h2 { font-size: 25px; line-height: 1.3; font-weight: 400; letter-spacing: -.8px;
 .file-count { color: var(--subtext0); border: 1px solid var(--surface1); font-size: 9px; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
 .section-description { color: var(--subtext1); font-size: 12px; line-height: 1.9; margin: 14px 0 0; }
 .project-list { margin-top: 27px; border-top: 1px solid var(--surface1); }
-.project { display: grid; grid-template-columns: 27px minmax(0, 1fr) 142px 20px; align-items: start; gap: 16px; padding: 25px 13px 23px 0; border-bottom: 1px solid var(--surface0); transition: background .18s; }
+.project { display: grid; grid-template-columns: 27px minmax(0, 1fr) 142px 20px; align-items: start; gap: 16px; padding: 25px 13px 23px; border-bottom: 1px solid var(--surface0); transition: background .18s; }
 .project:hover { background: var(--mantle); }
 .project-number { font-size: 10px; color: var(--subtext0); padding-top: 3px; }
 .project-title-line { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }

@@ -68,7 +68,8 @@ globalThis.portfolioMessages = Object.freeze({
       'terminal.autocomplete': 'autocomplete',
       'terminal.history': 'history',
       'terminal.focus': 'to focus',
-      'terminal.shortcuts': 'Keyboard shortcuts (/ and ?)',
+      'terminal.shortcuts': 'Keyboard shortcuts',
+      'terminal.shortcutsAnd': 'and',
       'footer.made': 'Made with curiosity',
     },
     'pt-BR': {
@@ -139,7 +140,8 @@ globalThis.portfolioMessages = Object.freeze({
       'terminal.autocomplete': 'completar',
       'terminal.history': 'histórico',
       'terminal.focus': 'para focar',
-      'terminal.shortcuts': 'Atalhos de teclado (/ e ?)',
+      'terminal.shortcuts': 'Atalhos de teclado',
+      'terminal.shortcutsAnd': 'e',
       'footer.made': 'Feito com curiosidade',
     },
   });
